@@ -1,0 +1,41 @@
+#!/bin/env bash
+set -e
+dockername=gzd/hello:1.0
+rminame=none
+networkMode=none
+susermi=$(docker images | grep $rminame | awk '{print $3}')
+susedocker=$(docker ps -a | grep $dockername | awk '{print $NF}')
+dockerBuild(){
+docker build -t $rminame .
+}
+dockerRun(){
+docker run -itd --name $dockername --network $networkMode $rminame
+}
+dockerExec(){
+docker exec -it $dockername /bin/bash
+}
+dockerRm(){
+docker rm -f $susedocker
+}
+dockerRmi(){
+docker rmi -f $susermi
+}
+case $1 in
+'build')
+    dockerBuild
+    ;;
+'run')
+    dockerRun
+    ;;
+'exec')
+    dockerExec
+    ;;
+'delete')
+    dockerRm
+    dockerRmi
+    ;;
+'*')
+    echo "please input (build|run|exec|delete)"
+    exit 2
+    ;;
+esac
