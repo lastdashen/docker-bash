@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cd $HOME
+for dir in cc work
+  do echo"....in $dir...."
+  cd $dir
+	for file in *.[c]
+	 do
+		ls -1 $file
+	 done
+  cd
+done
